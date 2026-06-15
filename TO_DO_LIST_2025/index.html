@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List 2025</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>To-Do List 2025</h1>
+            <p class="subtitle">Organize your tasks efficiently</p>
+        </header>
+
+        <div class="add-task-container">
+            <form id="task-form">
+                <input type="text" id="task-input" placeholder="Add a new task..." required>
+                <div class="form-row">
+                    <select id="priority-select">
+                        <option value="low">Low Priority</option>
+                        <option value="medium" selected>Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <input type="datetime-local" id="schedule-date" title="Schedule this task">
+                </div>
+                <div class="form-row">
+                    <div class="reminder-options">
+                        <label for="reminder-type">Reminder:</label>
+                        <select id="reminder-type">
+                            <option value="none">None</option>
+                            <option value="notification">Browser Notification</option>
+                            <option value="sms">SMS</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </div>
+                    <div class="reminder-timing">
+                        <input type="number" id="reminder-time" min="1" value="10">
+                        <select id="reminder-unit">
+                            <option value="minutes">Minutes</option>
+                            <option value="hours">Hours</option>
+                            <option value="days">Days</option>
+                            <option value="weeks">Weeks</option>
+                            <option value="months">Months</option>
+                        </select>
+                        <span>before</span>
+                    </div>
+                </div>
+                <div class="form-row voice-input-row">
+                    <button type="button" id="voice-input-btn" title="Add task by voice">
+                        <i class="fas fa-microphone"></i> Voice Input
+                    </button>
+                    <span id="voice-status">Click to speak</span>
+                </div>
+                <div class="form-row">
+                    <button type="submit" id="add-task-btn">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                    <button type="button" id="share-btn" title="Share your tasks">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="filters">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="scheduled">Scheduled</button>
+            </div>
+            <div class="sort-container">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select">
+                    <option value="date-added">Date Added</option>
+                    <option value="priority">Priority</option>
+                    <option value="alphabetical">Alphabetical</option>
+                    <option value="schedule-date">Schedule Date</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <h2>My Tasks <span id="task-counter">(0)</span></h2>
+            <div class="board">
+                <div class="board-column" id="todo-column">
+                    <div class="column-header">
+                        <h3>To Do</h3>
+                        <span class="column-count" id="todo-count">0</span>
+                    </div>
+                    <div class="task-list" id="todo-list" data-status="todo">
+                        <!-- To Do tasks will be added here -->
+                    </div>
+                </div>
+                
+                <div class="board-column" id="in-progress-column">
+                    <div class="column-header">
+                        <h3>In Progress</h3>
+                        <span class="column-count" id="in-progress-count">0</span>
+                    </div>
+                    <div class="task-list" id="in-progress-list" data-status="in-progress">
+                        <!-- In Progress tasks will be added here -->
+                    </div>
+                </div>
+                
+                <div class="board-column" id="completed-column">
+                    <div class="column-header">
+                        <h3>Completed</h3>
+                        <span class="column-count" id="completed-count">0</span>
+                    </div>
+                    <div class="task-list" id="completed-list" data-status="completed">
+                        <!-- Completed tasks will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary">
+            <div class="summary-item">
+                <span class="summary-label">Total Tasks:</span>
+                <span id="total-tasks">0</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Completed:</span>
+                <span id="completed-tasks">0</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Pending:</span>
+                <span id="pending-tasks">0</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Scheduled:</span>
+                <span id="scheduled-tasks">0</span>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="clear-completed-btn">Clear Completed</button>
+            <button id="clear-all-btn">Clear All</button>
+            <button id="sync-btn" title="Sync tasks with cloud"><i class="fas fa-sync"></i> Sync</button>
+            <button id="offline-mode-btn" title="Toggle offline mode"><i class="fas fa-wifi"></i> Online</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 To-Do List App. All rights reserved.</p>
+        <p id="connection-status">Online</p>
+    </footer>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Share Your Tasks</h2>
+            <div class="share-options">
+                <div class="share-option">
+                    <h3>Share Online</h3>
+                    <p>Generate a link to share your tasks online:</p>
+                    <button id="generate-link-btn">Generate Link</button>
+                    <div id="share-link-container" class="hidden">
+                        <input type="text" id="share-link" readonly>
+                        <button id="copy-link-btn">Copy</button>
+                    </div>
+                </div>
+                <div class="share-option">
+                    <h3>Share Offline</h3>
+                    <p>Export your tasks to share offline:</p>
+                    <button id="export-tasks-btn">Export as File</button>
+                </div>
+                <div class="share-option">
+                    <h3>Import Tasks</h3>
+                    <p>Import tasks from a file:</p>
+                    <input type="file" id="import-tasks-input" accept=".json">
+                    <button id="import-tasks-btn">Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Notification Modal -->
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Task Reminder</h2>
+            <p id="notification-message"></p>
+            <div class="notification-actions">
+                <button id="dismiss-notification-btn">Dismiss</button>
+                <button id="snooze-notification-btn">Snooze (10 min)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Info Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Contact Information</h2>
+            <p>Please provide your contact information for reminders:</p>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="phone-number">Phone Number (for SMS):</label>
+                    <input type="tel" id="phone-number" placeholder="+1234567890">
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp-number">WhatsApp Number:</label>
+                    <input type="tel" id="whatsapp-number" placeholder="+1234567890">
+                </div>
+                <div class="form-group">
+                    <label for="email-address">Email Address:</label>
+                    <input type="email" id="email-address" placeholder="your@email.com">
+                </div>
+                <button type="submit" id="save-contact-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Voice Input Modal -->
+    <div id="voice-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Voice Input</h2>
+            <div class="voice-input-container">
+                <div class="voice-visualization">
+                    <div class="voice-wave"></div>
+                </div>
+                <p id="voice-instructions">Speak clearly to add a task</p>
+                <p id="voice-transcript"></p>
+                <div class="voice-actions">
+                    <button id="start-voice-btn"><i class="fas fa-microphone"></i> Start</button>
+                    <button id="stop-voice-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+                    <button id="use-transcript-btn" disabled><i class="fas fa-check"></i> Use</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
